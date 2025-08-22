@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .score-card {
+            transition: transform 0.2s;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .score-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+        }
+        .score-badge {
+            font-size: 0.9rem;
+            padding: 0.5rem 1rem;
+        }
+        .college-name {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        .metric-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #34495e;
+        }
+        .metric-label {
+            font-size: 0.85rem;
+            color: #7f8c8d;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .navbar-brand {
+            font-weight: bold;
+            color: #2c3e50 !important;
+        }
+        .hero-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 3rem 0;
+        }
+        .stats-card {
+            background: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <i class="fas fa-graduation-cap me-2"></i>NIRF Automation
+            </a>
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link" href="/"><i class="fas fa-home me-1"></i>Dashboard</a>
+                <a class="nav-link" href="/compare"><i class="fas fa-chart-bar me-1"></i>Compare</a>
+                <a class="nav-link" href="/auto"><i class="fas fa-robot me-1"></i>Auto</a>
+                <a class="nav-link" href="/input"><i class="fas fa-pen me-1"></i>Add Data</a>
+                <a class="nav-link" href="/run-analysis"><i class="fas fa-play me-1"></i>Run Analysis</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <div class="hero-section">
+        <div class="container text-center">
+            <h1 class="display-4 mb-3">
+                <i class="fas fa-trophy me-3"></i>NIRF Rankings Dashboard
+            </h1>
+            <p class="lead">Comprehensive analysis and comparison of college performance metrics</p>
+            {% if results %}
+            <div class="row mt-4">
+                <div class="col-md-3">
+                    <div class="stats-card">
+                        <h3 class="text-primary">{{ results|length }}</h3>
+                        <p class="mb-0">Colleges Analyzed</p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="stats-card">
+                        <h3 class="text-success">{{ "%.2f"|format(results[0]['Total Score']) }}</h3>
+                        <p class="mb-0">Top Score</p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="stats-card">
+                        <h3 class="text-info">{{ "%.2f"|format(results|map(attribute='Total Score')|sum / results|length) }}</h3>
+                        <p class="mb-0">Average Score</p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="stats-card">
+                        <h3 class="text-warning">{{ results|selectattr('Status', 'equalto', 'success')|list|length }}</h3>
+                        <p class="mb-0">Auto-Scraped</p>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="container mt-5">
+        {% if results %}
+        <!-- Results Table -->
+        <div class="card mb-5">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0"><i class="fas fa-list me-2"></i>NIRF Rankings</h5>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>Rank</th>
+                                <th>College</th>
+                                <th>TLR</th>
+                                <th>RP</th>
+                                <th>GO</th>
+                                <th>OI</th>
+                                <th>PR</th>
+                                <th>Total Score</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for result in results %}
+                            <tr>
+                                <td>
+                                    {% if loop.index == 1 %}
+                                        <span class="badge bg-warning text-dark">🥇</span>
+                                    {% elif loop.index == 2 %}
+                                        <span class="badge bg-secondary">🥈</span>
+                                    {% elif loop.index == 3 %}
+                                        <span class="badge bg-warning">🥉</span>
+                                    {% else %}
+                                        <span class="badge bg-light text-dark">{{ loop.index }}</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <span class="college-name">{{ result.College }}</span>
+                                </td>
+                                <td>
+                                    <span class="badge bg-info score-badge">{{ "%.2f"|format(result.TLR) }}</span>
+                                </td>
+                                <td>
+                                    <span class="badge bg-success score-badge">{{ "%.2f"|format(result.RP) }}</span>
+                                </td>
+                                <td>
+                                    <span class="badge bg-warning score-badge">{{ "%.2f"|format(result.GO) }}</span>
+                                </td>
+                                <td>
+                                    <span class="badge bg-primary score-badge">{{ "%.2f"|format(result.OI) }}</span>
+                                </td>
+                                <td>
+                                    <span class="badge bg-secondary score-badge">{{ "%.2f"|format(result.PR) }}</span>
+                                </td>
+                                <td>
+                                    <strong class="text-primary">{{ "%.2f"|format(result['Total Score']) }}</strong>
+                                </td>
+                                <td>
+                                    {% if result.Status == 'success' %}
+                                        <span class="badge bg-success"><i class="fas fa-check me-1"></i>Auto</span>
+                                    {% elif result.Status == 'manual_input' %}
+                                        <span class="badge bg-info"><i class="fas fa-edit me-1"></i>Manual</span>
+                                    {% else %}
+                                        <span class="badge bg-warning"><i class="fas fa-exclamation-triangle me-1"></i>Failed</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <a href="/college/{{ result.College }}" class="btn btn-sm btn-outline-primary">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Charts Section -->
+        <div class="row mb-5">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header bg-success text-white">
+                        <h6 class="mb-0"><i class="fas fa-chart-pie me-2"></i>Score Distribution</h6>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="scoreChart" width="400" height="200"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header bg-info text-white">
+                        <h6 class="mb-0"><i class="fas fa-chart-bar me-2"></i>Top 5 Colleges</h6>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="topCollegesChart" width="400" height="200"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Individual College Cards -->
+        <h4 class="mb-4"><i class="fas fa-building me-2"></i>College Details</h4>
+        <div class="row">
+            {% for college in colleges %}
+            <div class="col-lg-6 col-xl-4 mb-4">
+                <div class="card score-card h-100">
+                    {% if college.image_url %}
+                    <img src="{{ college.image_url }}" class="card-img-top" style="max-height: 180px; object-fit: cover;" onerror="this.style.display='none'">
+                    {% endif %}
+                    <div class="card-header bg-light">
+                        <h6 class="mb-0 college-name">{{ college.college_name }}</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="row text-center">
+                            <div class="col-4">
+                                <div class="metric-value text-primary">{{ "%.2f"|format(college.TLR) }}</div>
+                                <div class="metric-label">TLR</div>
+                            </div>
+                            <div class="col-4">
+                                <div class="metric-value text-success">{{ "%.2f"|format(college.RP) }}</div>
+                                <div class="metric-label">RP</div>
+                            </div>
+                            <div class="col-4">
+                                <div class="metric-value text-warning">{{ "%.2f"|format(college.GO) }}</div>
+                                <div class="metric-label">GO</div>
+                            </div>
+                        </div>
+                        <div class="row text-center mt-3">
+                            <div class="col-4">
+                                <div class="metric-value text-info">{{ "%.2f"|format(college.OI) }}</div>
+                                <div class="metric-label">OI</div>
+                            </div>
+                            <div class="col-4">
+                                <div class="metric-value text-secondary">{{ "%.2f"|format(college.PR) }}</div>
+                                <div class="metric-label">PR</div>
+                            </div>
+                            <div class="col-4">
+                                <div class="metric-value text-danger">{{ "%.2f"|format(college.Total) }}</div>
+                                <div class="metric-label">Total</div>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <small class="text-muted">
+                                {% if college.scraping_status == 'success' %}
+                                    <i class="fas fa-check-circle text-success me-1"></i>Auto-scraped
+                                {% elif college.scraping_status == 'manual_input' %}
+                                    <i class="fas fa-edit text-info me-1"></i>Manual input
+                                {% else %}
+                                    <i class="fas fa-exclamation-triangle text-warning me-1"></i>Scraping failed
+                                {% endif %}
+                            </small>
+                            <a href="/college/{{ college.college_name }}" class="btn btn-sm btn-outline-primary">
+                                View Details
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        {% else %}
+        <!-- No Data Message -->
+        <div class="text-center py-5">
+            <i class="fas fa-database fa-3x text-muted mb-3"></i>
+            <h4 class="text-muted">No Data Available</h4>
+            <p class="text-muted">Run the NIRF analysis first to see results here.</p>
+            <a href="/run-analysis" class="btn btn-primary btn-lg">
+                <i class="fas fa-play me-2"></i>Run Analysis
+            </a>
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-light py-4 mt-5">
+        <div class="container text-center">
+            <p class="text-muted mb-0">
+                <i class="fas fa-code me-1"></i>NIRF Automation System | 
+                <i class="fas fa-calendar me-1"></i>{{ year }}
+            </p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    
+    {% if results %}
+    <script>
+        // Score Distribution Chart
+        const scoreCtx = document.getElementById('scoreChart').getContext('2d');
+        new Chart(scoreCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['TLR', 'RP', 'GO', 'OI', 'PR'],
+                datasets: [{
+                    data: [
+                        {{ results|map(attribute='TLR')|sum }},
+                        {{ results|map(attribute='RP')|sum }},
+                        {{ results|map(attribute='GO')|sum }},
+                        {{ results|map(attribute='OI')|sum }},
+                        {{ results|map(attribute='PR')|sum }}
+                    ],
+                    backgroundColor: [
+                        '#17a2b8', '#28a745', '#ffc107', '#007bff', '#6c757d'
+                    ]
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'bottom'
+                    }
+                }
+            }
+        });
+
+        // Top Colleges Chart
+        const topCollegesCtx = document.getElementById('topCollegesChart').getContext('2d');
+        new Chart(topCollegesCtx, {
+            type: 'bar',
+            data: {
+                labels: {{ results[:5]|map(attribute='College')|list|tojson }},
+                datasets: [{
+                    label: 'Total Score',
+                    data: {{ results[:5]|map(attribute='Total Score')|list|tojson }},
+                    backgroundColor: '#007bff',
+                    borderRadius: 5
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                }
+            }
+        });
+    </script>
+    {% endif %}
+</body>
+</html>
+

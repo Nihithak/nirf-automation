@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .comparison-card {
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s;
+        }
+        .comparison-card:hover {
+            transform: translateY(-3px);
+        }
+        .metric-bar {
+            height: 25px;
+            border-radius: 12px;
+            position: relative;
+        }
+        .metric-value {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: white;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+        .college-selector {
+            border-radius: 10px;
+            border: 2px solid #e9ecef;
+            transition: border-color 0.3s;
+        }
+        .college-selector:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+        }
+        .comparison-table th {
+            background-color: #f8f9fa;
+            border-top: none;
+        }
+        .score-highlight {
+            background-color: #d4edda;
+            border-color: #c3e6cb;
+        }
+        .score-lowlight {
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <i class="fas fa-graduation-cap me-2"></i>NIRF Automation
+            </a>
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link" href="/"><i class="fas fa-home me-1"></i>Dashboard</a>
+                <a class="nav-link active" href="/compare"><i class="fas fa-chart-bar me-1"></i>Compare</a>
+                <a class="nav-link" href="/run-analysis"><i class="fas fa-play me-1"></i>Run Analysis</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header -->
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-12">
+                <h2 class="mb-4">
+                    <i class="fas fa-balance-scale me-2"></i>Compare Colleges
+                </h2>
+                <p class="text-muted">Select up to 5 colleges to compare their NIRF performance metrics side by side.</p>
+            </div>
+        </div>
+
+        {% if colleges %}
+        <!-- College Selection -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card comparison-card">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0"><i class="fas fa-filter me-2"></i>Select Colleges to Compare</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            {% for i in range(5) %}
+                            <div class="col-md-2 mb-3">
+                                <label class="form-label">College {{ i + 1 }}</label>
+                                <select class="form-select college-selector" id="college-{{ i }}" onchange="updateComparison()">
+                                    <option value="">Select...</option>
+                                    {% for college in colleges %}
+                                    <option value="{{ college.college_name }}">{{ college.college_name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        <div class="text-center mt-3">
+                            <button class="btn btn-outline-primary" onclick="clearSelection()">
+                                <i class="fas fa-eraser me-1"></i>Clear Selection
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Comparison Results -->
+        <div id="comparison-results" style="display: none;">
+            <!-- Overall Scores Comparison -->
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="card comparison-card">
+                        <div class="card-header bg-success text-white">
+                            <h5 class="mb-0"><i class="fas fa-trophy me-2"></i>Overall NIRF Scores Comparison</h5>
+                        </div>
+                        <div class="card-body">
+                            <div id="overall-scores-chart">
+                                <canvas id="overallChart" width="400" height="200"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Category Scores Comparison -->
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="card comparison-card">
+                        <div class="card-header bg-info text-white">
+                            <h5 class="mb-0"><i class="fas fa-chart-line me-2"></i>Category Scores Comparison</h5>
+                        </div>
+                        <div class="card-body">
+                            <div id="category-scores-chart">
+                                <canvas id="categoryChart" width="400" height="200"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Detailed Comparison Table -->
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="card comparison-card">
+                        <div class="card-header bg-warning text-dark">
+                            <h5 class="mb-0"><i class="fas fa-table me-2"></i>Detailed Metrics Comparison</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover comparison-table" id="comparison-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Metric</th>
+                                            <th id="col1-header">College 1</th>
+                                            <th id="col2-header">College 2</th>
+                                            <th id="col3-header">College 3</th>
+                                            <th id="col4-header">College 4</th>
+                                            <th id="col5-header">College 5</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr class="table-primary">
+                                            <td><strong>Total NIRF Score</strong></td>
+                                            <td id="col1-total">-</td>
+                                            <td id="col2-total">-</td>
+                                            <td id="col3-total">-</td>
+                                            <td id="col4-total">-</td>
+                                            <td id="col5-total">-</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>TLR Score</strong></td>
+                                            <td id="col1-tlr">-</td>
+                                            <td id="col2-tlr">-</td>
+                                            <td id="col3-tlr">-</td>
+                                            <td id="col4-tlr">-</td>
+                                            <td id="col5-tlr">-</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>RP Score</strong></td>
+                                            <td id="col1-rp">-</td>
+                                            <td id="col2-rp">-</td>
+                                            <td id="col3-rp">-</td>
+                                            <td id="col4-rp">-</td>
+                                            <td id="col5-rp">-</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>GO Score</strong></td>
+                                            <td id="col1-go">-</td>
+                                            <td id="col2-go">-</td>
+                                            <td id="col3-go">-</td>
+                                            <td id="col4-go">-</td>
+                                            <td id="col5-go">-</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>OI Score</strong></td>
+                                            <td id="col1-oi">-</td>
+                                            <td id="col2-oi">-</td>
+                                            <td id="col3-oi">-</td>
+                                            <td id="col4-oi">-</td>
+                                            <td id="col5-oi">-</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>PR Score</strong></td>
+                                            <td id="col1-pr">-</td>
+                                            <td id="col2-pr">-</td>
+                                            <td id="col3-pr">-</td>
+                                            <td id="col4-pr">-</td>
+                                            <td id="col5-pr">-</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Metric Bars Comparison -->
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="card comparison-card">
+                        <div class="card-header bg-dark text-white">
+                            <h5 class="mb-0"><i class="fas fa-chart-bar me-2"></i>Visual Score Comparison</h5>
+                        </div>
+                        <div class="card-body">
+                            <div id="metric-bars">
+                                <!-- Metric bars will be generated here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {% else %}
+        <!-- No Data Message -->
+        <div class="text-center py-5">
+            <i class="fas fa-database fa-3x text-muted mb-3"></i>
+            <h4 class="text-muted">No Data Available</h4>
+            <p class="text-muted">Run the NIRF analysis first to compare colleges.</p>
+            <a href="/run-analysis" class="btn btn-primary btn-lg">
+                <i class="fas fa-play me-2"></i>Run Analysis
+            </a>
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-light py-4 mt-5">
+        <div class="container text-center">
+            <p class="text-muted mb-0">
+                <i class="fas fa-code me-1"></i>NIRF Automation System | 
+                <i class="fas fa-chart-bar me-1"></i>Comparison Tool
+            </p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    
+    {% if colleges %}
+    <script>
+        // Store college data for comparison
+        const collegeData = {{ colleges|tojson }};
+        let selectedColleges = [];
+        let charts = {};
+
+        function updateComparison() {
+            selectedColleges = [];
+            for (let i = 0; i < 5; i++) {
+                const select = document.getElementById(`college-${i}`);
+                if (select.value) {
+                    const college = collegeData.find(c => c.college_name === select.value);
+                    if (college) {
+                        selectedColleges.push(college);
+                    }
+                }
+            }
+
+            if (selectedColleges.length > 0) {
+                document.getElementById('comparison-results').style.display = 'block';
+                updateCharts();
+                updateTable();
+                updateMetricBars();
+            } else {
+                document.getElementById('comparison-results').style.display = 'none';
+            }
+        }
+
+        function updateCharts() {
+            // Update overall scores chart
+            if (charts.overall) {
+                charts.overall.destroy();
+            }
+            
+            const overallCtx = document.getElementById('overallChart').getContext('2d');
+            charts.overall = new Chart(overallCtx, {
+                type: 'bar',
+                data: {
+                    labels: selectedColleges.map(c => c.college_name),
+                    datasets: [{
+                        label: 'Total NIRF Score',
+                        data: selectedColleges.map(c => c.Total),
+                        backgroundColor: selectedColleges.map((_, i) => 
+                            `hsl(${i * 360 / selectedColleges.length}, 70%, 60%)`
+                        ),
+                        borderRadius: 5
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 10
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    }
+                }
+            });
+
+            // Update category scores chart
+            if (charts.category) {
+                charts.category.destroy();
+            }
+            
+            const categoryCtx = document.getElementById('categoryChart').getContext('2d');
+            charts.category = new Chart(categoryCtx, {
+                type: 'line',
+                data: {
+                    labels: ['TLR', 'RP', 'GO', 'OI', 'PR'],
+                    datasets: selectedColleges.map((college, i) => ({
+                        label: college.college_name,
+                        data: [college.TLR, college.RP, college.GO, college.OI, college.PR],
+                        borderColor: `hsl(${i * 360 / selectedColleges.length}, 70%, 60%)`,
+                        backgroundColor: `hsla(${i * 360 / selectedColleges.length}, 70%, 60%, 0.1)`,
+                        tension: 0.4,
+                        fill: false
+                    }))
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 10
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }
+            });
+        }
+
+        function updateTable() {
+            // Update table headers
+            for (let i = 1; i <= 5; i++) {
+                const header = document.getElementById(`col${i}-header`);
+                if (i <= selectedColleges.length) {
+                    header.textContent = selectedColleges[i-1].college_name;
+                } else {
+                    header.textContent = `College ${i}`;
+                }
+            }
+
+            // Update table data
+            for (let i = 1; i <= 5; i++) {
+                if (i <= selectedColleges.length) {
+                    const college = selectedColleges[i-1];
+                    document.getElementById(`col${i}-total`).textContent = college.Total.toFixed(2);
+                    document.getElementById(`col${i}-tlr`).textContent = college.TLR.toFixed(2);
+                    document.getElementById(`col${i}-rp`).textContent = college.RP.toFixed(2);
+                    document.getElementById(`col${i}-go`).textContent = college.GO.toFixed(2);
+                    document.getElementById(`col${i}-oi`).textContent = college.OI.toFixed(2);
+                    document.getElementById(`col${i}-pr`).textContent = college.PR.toFixed(2);
+                } else {
+                    document.getElementById(`col${i}-total`).textContent = '-';
+                    document.getElementById(`col${i}-tlr`).textContent = '-';
+                    document.getElementById(`col${i}-rp`).textContent = '-';
+                    document.getElementById(`col${i}-go`).textContent = '-';
+                    document.getElementById(`col${i}-oi`).textContent = '-';
+                    document.getElementById(`col${i}-pr`).textContent = '-';
+                }
+            }
+
+            // Highlight best scores
+            highlightBestScores();
+        }
+
+        function highlightBestScores() {
+            const metrics = ['Total', 'TLR', 'RP', 'GO', 'OI', 'PR'];
+            
+            metrics.forEach(metric => {
+                let bestScore = -1;
+                let bestCol = -1;
+                
+                // Find best score
+                for (let i = 1; i <= selectedColleges.length; i++) {
+                    const score = parseFloat(document.getElementById(`col${i}-${metric.toLowerCase()}`).textContent);
+                    if (score > bestScore) {
+                        bestScore = score;
+                        bestCol = i;
+                    }
+                }
+                
+                // Highlight best score
+                if (bestCol > 0) {
+                    const cell = document.getElementById(`col${bestCol}-${metric.toLowerCase()}`);
+                    cell.classList.add('score-highlight');
+                }
+            });
+        }
+
+        function updateMetricBars() {
+            const container = document.getElementById('metric-bars');
+            container.innerHTML = '';
+            
+            const metrics = [
+                { key: 'TLR', name: 'Teaching & Learning Resources', color: '#007bff' },
+                { key: 'RP', name: 'Research & Professional Practice', color: '#28a745' },
+                { key: 'GO', name: 'Graduation Outcomes', color: '#ffc107' },
+                { key: 'OI', name: 'Outreach & Inclusivity', color: '#17a2b8' },
+                { key: 'PR', name: 'Perception', color: '#6c757d' }
+            ];
+            
+            metrics.forEach(metric => {
+                const metricDiv = document.createElement('div');
+                metricDiv.className = 'mb-4';
+                
+                let html = `<h6 class="mb-2">${metric.name}</h6>`;
+                
+                selectedColleges.forEach((college, index) => {
+                    const score = college[metric.key];
+                    const percentage = (score / 10) * 100;
+                    const color = `hsl(${index * 360 / selectedColleges.length}, 70%, 60%)`;
+                    
+                    html += `
+                        <div class="mb-2">
+                            <div class="d-flex justify-content-between mb-1">
+                                <small>${college.college_name}</small>
+                                <small>${score.toFixed(2)}</small>
+                            </div>
+                            <div class="metric-bar" style="background-color: ${color}; width: ${percentage}%;">
+                                <span class="metric-value">${score.toFixed(2)}</span>
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                metricDiv.innerHTML = html;
+                container.appendChild(metricDiv);
+            });
+        }
+
+        function clearSelection() {
+            for (let i = 0; i < 5; i++) {
+                document.getElementById(`college-${i}`).value = '';
+            }
+            selectedColleges = [];
+            document.getElementById('comparison-results').style.display = 'none';
+            
+            // Destroy charts
+            Object.values(charts).forEach(chart => {
+                if (chart) chart.destroy();
+            });
+            charts = {};
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            // Auto-select first college if available
+            if (collegeData.length > 0) {
+                document.getElementById('college-0').value = collegeData[0].college_name;
+                updateComparison();
+            }
+        });
+    </script>
+    {% endif %}
+</body>
+</html>
+
