@@ -1,0 +1,1153 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>KBN College - Excellence in Education | 500+ Job Offers | Best College in India</title>
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #667eea;
+            --secondary-color: #764ba2;
+            --accent-color: #4facfe;
+            --text-primary: #2d3748;
+            --text-secondary: #4a5568;
+            --bg-primary: #ffffff;
+            --bg-secondary: #f7fafc;
+            --bg-tertiary: #edf2f7;
+            --card-bg: #ffffff;
+            --border-color: #e2e8f0;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        [data-theme="dark"] {
+            --primary-color: #4facfe;
+            --secondary-color: #00f2fe;
+            --accent-color: #667eea;
+            --text-primary: #f7fafc;
+            --text-secondary: #e2e8f0;
+            --bg-primary: #1a202c;
+            --bg-secondary: #2d3748;
+            --bg-tertiary: #4a5568;
+            --card-bg: #2d3748;
+            --border-color: #4a5568;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+            --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.4);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.6;
+            color: var(--text-primary);
+            background: var(--bg-primary);
+            transition: all 0.3s ease;
+            overflow-x: hidden;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1001;
+            background: var(--card-bg);
+            border: 2px solid var(--border-color);
+            border-radius: 50px;
+            padding: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow);
+        }
+        
+        .theme-toggle:hover {
+            transform: scale(1.1);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .theme-toggle i {
+            font-size: 1.2rem;
+            color: var(--primary-color);
+        }
+        
+        .header {
+            background: linear-gradient(-45deg, var(--primary-color) 0%, var(--secondary-color) 25%, var(--accent-color) 50%, #f093fb 75%, #f5576c 100%);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+            color: white;
+            padding: 2rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.2);
+            z-index: 1;
+        }
+        
+        .header-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .header p {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            opacity: 0.9;
+        }
+        
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .nav {
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            transition: all 0.3s ease;
+            border-bottom: 1px solid var(--border-color);
+            box-shadow: var(--shadow);
+        }
+        
+        .nav.scrolled {
+            background: rgba(45, 55, 72, 0.95);
+            backdrop-filter: blur(20px);
+        }
+        
+        .nav ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+        
+        .nav a {
+            color: var(--text-primary);
+            text-decoration: none;
+            font-weight: 500;
+            position: relative;
+            transition: all 0.3s ease;
+            padding: 0.8rem 1.5rem;
+            border-radius: 25px;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .nav a:hover {
+            background: var(--primary-color);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+        
+        .hero {
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), 
+                        url('https://images.unsplash.com/photo-1523050854058-8df90110c9e1?ixlib=rb-4.0.3');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: white;
+            text-align: center;
+            padding: 8rem 2rem;
+            position: relative;
+        }
+        
+        .hero h1 {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+            animation: fadeInUp 1s ease;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            font-weight: 800;
+        }
+        
+        .hero p {
+            font-size: 1.4rem;
+            margin-bottom: 2rem;
+            animation: fadeInUp 1s ease 0.2s both;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .hero-buttons {
+            animation: fadeInUp 1s ease 0.4s both;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 1.2rem 2.5rem;
+            margin: 0 1rem;
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow);
+            border: none;
+            cursor: pointer;
+            font-size: 1.1rem;
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .stats {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            padding: 5rem 0;
+            color: white;
+        }
+        
+        .stats h2 {
+            text-align: center;
+            margin-bottom: 3rem;
+            font-size: 2.5rem;
+            font-weight: 700;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .stat-card {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(20px);
+            padding: 2.5rem;
+            border-radius: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255,255,255,0.2);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            transition: left 0.5s ease;
+        }
+        
+        .stat-card:hover::before {
+            left: 100%;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-10px);
+            background: rgba(255,255,255,0.15);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+        
+        .stat-number {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, #fff, #f0f0f0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .stat-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+        
+        .stat-card p {
+            opacity: 0.9;
+            font-size: 0.95rem;
+        }
+        
+        .content {
+            padding: 5rem 0;
+            background: var(--bg-secondary);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        
+        .section {
+            margin-bottom: 5rem;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+            background: var(--card-bg);
+            padding: 3rem;
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border-color);
+        }
+        
+        .section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .section h2 {
+            color: var(--primary-color);
+            margin-bottom: 2rem;
+            border-bottom: 3px solid var(--primary-color);
+            padding-bottom: 1rem;
+            font-size: 2.5rem;
+            position: relative;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .section h2::after {
+            content: '';
+            position: absolute;
+            bottom: -3px;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+        }
+        
+        .section p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 2rem;
+        }
+        
+        .highlight {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            padding: 2.5rem;
+            border-radius: 20px;
+            margin: 2rem 0;
+            box-shadow: var(--shadow-lg);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .highlight strong {
+            font-size: 1.2rem;
+            display: block;
+            margin-bottom: 1.5rem;
+        }
+        
+        .highlight ul {
+            margin-left: 2rem;
+            margin-top: 1rem;
+        }
+        
+        .highlight li {
+            margin-bottom: 0.8rem;
+            position: relative;
+            font-size: 1rem;
+        }
+        
+        .highlight li::before {
+            content: '✓';
+            position: absolute;
+            left: -1.5rem;
+            color: var(--accent-color);
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+        
+        .info-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+        
+        .info-card {
+            background: var(--card-bg);
+            padding: 2.5rem;
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
+            border-left: 5px solid var(--primary-color);
+            border: 1px solid var(--border-color);
+        }
+        
+        .info-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .info-card h3 {
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            font-size: 1.4rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+        
+        .info-card ul {
+            list-style: none;
+        }
+        
+        .info-card li {
+            margin-bottom: 1rem;
+            padding: 0.8rem;
+            background: var(--bg-tertiary);
+            border-radius: 10px;
+            border-left: 3px solid var(--accent-color);
+        }
+        
+        .info-card strong {
+            color: var(--text-primary);
+        }
+        
+        .progress-section {
+            margin: 2rem 0;
+        }
+        
+        .progress-item {
+            margin-bottom: 1.5rem;
+        }
+        
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.8rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 12px;
+            background: var(--bg-tertiary);
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(45deg, var(--primary-color), var(--accent-color));
+            border-radius: 10px;
+            transition: width 1.5s ease;
+            position: relative;
+        }
+        
+        .progress-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            animation: shimmer 2s infinite;
+        }
+        
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+        
+        .ranking-suggestions {
+            background: linear-gradient(135deg, #ff6b6b 0%, #feca57 100%);
+            color: white;
+            padding: 2.5rem;
+            border-radius: 20px;
+            margin: 2rem 0;
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .ranking-suggestions h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        
+        .suggestion-item {
+            background: rgba(255,255,255,0.1);
+            padding: 1.5rem;
+            border-radius: 15px;
+            margin-bottom: 1rem;
+            border-left: 4px solid #fff;
+        }
+        
+        .suggestion-item strong {
+            color: #fff;
+            font-size: 1.1rem;
+        }
+        
+        .footer {
+            background: linear-gradient(135deg, var(--bg-tertiary) 0%, var(--bg-secondary) 100%);
+            color: var(--text-primary);
+            text-align: center;
+            padding: 4rem 0 2rem;
+            border-top: 1px solid var(--border-color);
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+        
+        .footer-section h3 {
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            font-size: 1.3rem;
+        }
+        
+        .footer-section p {
+            margin-bottom: 0.8rem;
+            color: var(--text-secondary);
+        }
+        
+        .footer-section a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .footer-section a:hover {
+            color: var(--primary-color);
+        }
+        
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+        
+        .social-links a {
+            color: var(--text-secondary);
+            font-size: 1.8rem;
+            transition: all 0.3s ease;
+            padding: 0.8rem;
+            border-radius: 50%;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+        }
+        
+        .social-links a:hover {
+            color: var(--primary-color);
+            transform: translateY(-3px);
+            box-shadow: var(--shadow);
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .header h1 {
+                font-size: 2.5rem;
+            }
+            
+            .nav ul {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .info-cards {
+                grid-template-columns: 1fr;
+            }
+            
+            .section {
+                padding: 2rem;
+            }
+            
+            .theme-toggle {
+                top: 10px;
+                right: 10px;
+            }
+        }
+        
+        .loading {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.6s ease;
+        }
+        
+        .loading.loaded {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <div class="theme-toggle" id="themeToggle">
+        <i class="fas fa-moon"></i>
+    </div>
+
+    <header class="header">
+        <div class="container header-content">
+            <h1><i class="fas fa-graduation-cap"></i> KBN College</h1>
+            <p>Excellence in Education Since 1985 | NAAC A++ Accredited</p>
+            <p>Empowering students with quality education and excellent placement opportunities</p>
+        </div>
+    </header>
+
+    <nav class="nav" id="navbar">
+        <div class="container">
+            <ul>
+                <li><a href="#home"><i class="fas fa-home"></i> Home</a></li>
+                <li><a href="#about"><i class="fas fa-info-circle"></i> About</a></li>
+                <li><a href="#academics"><i class="fas fa-book"></i> Academics</a></li>
+                <li><a href="#research"><i class="fas fa-microscope"></i> Research</a></li>
+                <li><a href="#placement"><i class="fas fa-briefcase"></i> Placement</a></li>
+                <li><a href="#suggestions"><i class="fas fa-lightbulb"></i> Ranking Tips</a></li>
+                <li><a href="#contact"><i class="fas fa-envelope"></i> Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section class="hero" id="home">
+        <div class="container">
+            <h1>Welcome to KBN College</h1>
+            <p>NAAC A++ Accredited | 500+ Job Offers Last Year | Best College in India</p>
+            <p>Empowering students with quality education and excellent placement opportunities</p>
+            <div class="hero-buttons">
+                <a href="#about" class="btn"><i class="fas fa-info-circle"></i> Learn More</a>
+                <a href="#placement" class="btn"><i class="fas fa-briefcase"></i> View Placements</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="stats">
+        <div class="container">
+            <h2>College Statistics</h2>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number" data-target="250">0</div>
+                    <h3><i class="fas fa-chalkboard-teacher"></i> Faculty Members</h3>
+                    <p>Highly qualified and experienced teaching staff</p>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" data-target="5000">0</div>
+                    <h3><i class="fas fa-users"></i> Students</h3>
+                    <p>Undergraduate and postgraduate students</p>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" data-target="175">0</div>
+                    <h3><i class="fas fa-user-graduate"></i> PhD Faculty</h3>
+                    <p>70% of faculty members hold PhD degrees</p>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" data-target="500">0</div>
+                    <h3><i class="fas fa-handshake"></i> Job Offers</h3>
+                    <p>Placement offers received last year</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="content">
+        <div class="container">
+            <div class="section loading" id="about">
+                <h2><i class="fas fa-info-circle"></i> About KBN College</h2>
+                <p>KBN College is a premier educational institution established in 1985. We are proud to be an autonomous college with NAAC A++ accreditation. Our institution has been consistently ranked among the top colleges in India.</p>
+                
+                <div class="highlight">
+                    <strong><i class="fas fa-star"></i> Key Highlights:</strong>
+                    <ul>
+                        <li>250 qualified faculty members including 175 PhD holders</li>
+                        <li>5000 students enrolled across various programs</li>
+                        <li>15 departments offering diverse academic programs</li>
+                        <li>Average experience of faculty: 12 years</li>
+                        <li>Faculty-Student Ratio: 1:20</li>
+                        <li>Student Satisfaction Rate: 95%</li>
+                        <li>Library Collection: 50,000+ books and journals</li>
+                        <li>Computer Labs: 15 labs with 500+ systems</li>
+                        <li>Research Labs: 20 specialized laboratories</li>
+                        <li>Hostel Capacity: 2000 students</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="section loading" id="academics">
+                <h2><i class="fas fa-book"></i> Academic Excellence</h2>
+                <p>Our college offers comprehensive academic programs across multiple disciplines. We maintain high academic standards and provide excellent learning resources.</p>
+                
+                <div class="info-cards">
+                    <div class="info-card">
+                        <h3><i class="fas fa-chart-line"></i> Academic Performance</h3>
+                        <div class="progress-section">
+                            <div class="progress-item">
+                                <div class="progress-label">
+                                    <span>Graduation Rate</span>
+                                    <span>92%</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 92%"></div>
+                                </div>
+                            </div>
+                            <div class="progress-item">
+                                <div class="progress-label">
+                                    <span>Student Satisfaction</span>
+                                    <span>96%</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 96%"></div>
+                                </div>
+                            </div>
+                            <div class="progress-item">
+                                <div class="progress-label">
+                                    <span>Faculty Quality</span>
+                                    <span>94%</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 94%"></div>
+                                </div>
+                            </div>
+                            <div class="progress-item">
+                                <div class="progress-label">
+                                    <span>Research Output</span>
+                                    <span>88%</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 88%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="info-card">
+                        <h3><i class="fas fa-clock"></i> Faculty Experience</h3>
+                        <ul>
+                            <li><strong>Average Experience:</strong> 12 years</li>
+                            <li><strong>PhD Faculty:</strong> 70% (175 out of 250)</li>
+                            <li><strong>Industry Experience:</strong> 8 years average</li>
+                            <li><strong>Research Active:</strong> 85%</li>
+                            <li><strong>International Experience:</strong> 25%</li>
+                            <li><strong>Post-Doctoral Experience:</strong> 15%</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section loading" id="research">
+                <h2><i class="fas fa-microscope"></i> Research & Publications</h2>
+                <p>Our faculty and students actively engage in research activities, contributing significantly to academic knowledge and innovation.</p>
+                
+                <div class="highlight">
+                    <strong><i class="fas fa-flask"></i> Research Output:</strong>
+                    <ul>
+                        <li>850 research publications in peer-reviewed journals</li>
+                        <li>4200 citations received for research work</li>
+                        <li>30 patents filed and 18 patents granted</li>
+                        <li>60 research projects completed</li>
+                        <li>₹35 lakhs earned through research and consultancy</li>
+                        <li>20 international collaborations</li>
+                        <li>40 research grants received</li>
+                        <li>120+ conference presentations</li>
+                        <li>15 book chapters published</li>
+                        <li>8 technology transfer agreements</li>
+                    </ul>
+                </div>
+                
+                <div class="info-cards">
+                    <div class="info-card">
+                        <h3><i class="fas fa-file-alt"></i> Publication Details</h3>
+                        <ul>
+                            <li><strong>International Journals:</strong> 520 papers (Q1: 180, Q2: 200, Q3: 100, Q4: 40)</li>
+                            <li><strong>National Journals:</strong> 330 papers</li>
+                            <li><strong>Conference Papers:</strong> 120 papers</li>
+                            <li><strong>Book Chapters:</strong> 25 chapters</li>
+                            <li><strong>Books Published:</strong> 8 books</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="info-card">
+                        <h3><i class="fas fa-lightbulb"></i> Innovation & Patents</h3>
+                        <ul>
+                            <li><strong>Patents Filed:</strong> 30</li>
+                            <li><strong>Patents Granted:</strong> 18</li>
+                            <li><strong>Patents Licensed:</strong> 10</li>
+                            <li><strong>Technology Transfer:</strong> 8</li>
+                            <li><strong>Startup Incubation:</strong> 5 companies</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section loading" id="placement">
+                <h2><i class="fas fa-briefcase"></i> Placement & Career</h2>
+                <p>We have an excellent track record of student placements with top companies offering competitive salaries.</p>
+                
+                <div class="highlight">
+                    <strong><i class="fas fa-chart-bar"></i> Placement Statistics:</strong>
+                    <ul>
+                        <li>500+ job offers received last year</li>
+                        <li>88% placement rate</li>
+                        <li>Average salary package: 9.2 LPA</li>
+                        <li>Highest package: 22 LPA</li>
+                        <li>8000 applications received for 5000 seats</li>
+                        <li>180+ companies visited campus</li>
+                        <li>96% students placed within 6 months</li>
+                        <li>Average placement time: 2.8 months</li>
+                        <li>Sanctioned Intake: 5000 students</li>
+                        <li>Applications received: 8000 (1.6x oversubscription)</li>
+                        <li>International Placements: 25 students</li>
+                        <li>Startup Placements: 45 students</li>
+                    </ul>
+                </div>
+                
+                <div class="info-cards">
+                    <div class="info-card">
+                        <h3><i class="fas fa-building"></i> Top Recruiters</h3>
+                        <ul>
+                            <li><strong>Tech Giants:</strong> Amazon, Google, Microsoft, Apple</li>
+                            <li><strong>Consulting:</strong> McKinsey, BCG, Bain & Company</li>
+                            <li><strong>Finance:</strong> Goldman Sachs, JP Morgan, Morgan Stanley</li>
+                            <li><strong>Indian IT:</strong> TCS, Infosys, Wipro, HCL</li>
+                            <li><strong>Product Companies:</strong> Adobe, Salesforce, Oracle</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="info-card">
+                        <h3><i class="fas fa-money-bill-wave"></i> Salary Statistics</h3>
+                        <ul>
+                            <li><strong>Average Package:</strong> 9.2 LPA</li>
+                            <li><strong>Highest Package:</strong> 22 LPA</li>
+                            <li><strong>Median Package:</strong> 8.1 LPA</li>
+                            <li><strong>10+ LPA Offers:</strong> 35%</li>
+                            <li><strong>15+ LPA Offers:</strong> 12%</li>
+                            <li><strong>International Offers:</strong> 25 LPA average</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section loading" id="suggestions">
+                <h2><i class="fas fa-lightbulb"></i> Ranking Improvement Suggestions</h2>
+                <p>Based on our analysis, here are strategic recommendations to improve our NIRF ranking:</p>
+                
+                <div class="ranking-suggestions">
+                    <h3><i class="fas fa-chart-line"></i> Strategic Recommendations for Better Ranking</h3>
+                    
+                    <div class="suggestion-item">
+                        <strong>🏆 Research Excellence (Priority: HIGH)</strong>
+                        <p>Increase international publications to 600+ papers annually. Target Q1 journals (60% of total). Establish 5 more international research collaborations.</p>
+                    </div>
+                    
+                    <div class="suggestion-item">
+                        <strong>🎓 Faculty Development (Priority: HIGH)</strong>
+                        <p>Increase PhD faculty to 80% (200 out of 250). Recruit 15 international faculty members. Provide research grants of ₹50 lakhs annually.</p>
+                    </div>
+                    
+                    <div class="suggestion-item">
+                        <strong>💼 Industry Connect (Priority: MEDIUM)</strong>
+                        <p>Establish partnerships with 50+ companies. Increase industry-sponsored projects to 30. Create 10 more industry chairs.</p>
+                    </div>
+                    
+                    <div class="suggestion-item">
+                        <strong>🌍 Internationalization (Priority: MEDIUM)</strong>
+                        <p>Increase international students to 10%. Establish 10 more MoUs with foreign universities. Host 5 international conferences annually.</p>
+                    </div>
+                    
+                    <div class="suggestion-item">
+                        <strong>💡 Innovation & Startups (Priority: MEDIUM)</strong>
+                        <p>Incubate 15 more startups. File 50 patents annually. Establish innovation center with ₹2 crore investment.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section loading">
+                <h2><i class="fas fa-users"></i> Diversity & Inclusion</h2>
+                <p>We promote diversity and inclusion in our campus community.</p>
+                
+                <div class="highlight">
+                    <strong><i class="fas fa-heart"></i> Diversity Statistics:</strong>
+                    <ul>
+                        <li>Women Students: 48% (2400 out of 5000)</li>
+                        <li>Women Faculty: 38% (95 out of 250)</li>
+                        <li>Women in Leadership: 42% (8 out of 19)</li>
+                        <li>Students from Other States: 35% (1750 students)</li>
+                        <li>International Students: 6% (300 students)</li>
+                        <li>Economically Disadvantaged Students: 28% (1400 students)</li>
+                        <li>First Generation Learners: 45% (2250 students)</li>
+                        <li>Students with Disabilities: 4% (200 students)</li>
+                        <li>LGBTQ+ Students: 3% (150 students)</li>
+                        <li>Rural Background Students: 40% (2000 students)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="section loading">
+                <h2><i class="fas fa-building"></i> Infrastructure & Facilities</h2>
+                <p>Our campus is equipped with state-of-the-art facilities to support academic and research activities.</p>
+                
+                <div class="highlight">
+                    <strong><i class="fas fa-cogs"></i> Infrastructure Details:</strong>
+                    <ul>
+                        <li>Library Expenditure (Physical): ₹20 lakhs</li>
+                        <li>Library Expenditure (Electronic): ₹12 lakhs</li>
+                        <li>Laboratory Expenditure: ₹18 lakhs</li>
+                        <li>Sports & Extra-curricular Activities: 88th percentile</li>
+                        <li>Student Competitions: 92nd percentile</li>
+                        <li>Cultural Activities: 85th percentile</li>
+                        <li>Winners in Competitions: 8 students</li>
+                        <li>Computer Labs: 18 labs with 600+ systems</li>
+                        <li>Research Labs: 25 specialized laboratories</li>
+                        <li>Hostel Capacity: 2500 students</li>
+                        <li>WiFi Coverage: 100% campus coverage</li>
+                        <li>Smart Classrooms: 80% of total classrooms</li>
+                        <li>Auditorium Capacity: 1000 seats</li>
+                        <li>Sports Complex: 15 acres dedicated area</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="section loading">
+                <h2><i class="fas fa-universal-access"></i> Accessibility & Support</h2>
+                <p>We are committed to providing accessible education for all students.</p>
+                
+                <div class="highlight">
+                    <strong><i class="fas fa-wheelchair"></i> Accessibility Features:</strong>
+                    <ul>
+                        <li>Ramps for wheelchair access in all buildings</li>
+                        <li>Elevators in all multi-story buildings</li>
+                        <li>Walking aids available at multiple locations</li>
+                        <li>Accessible toilets on all floors</li>
+                        <li>Braille labs for visually impaired students</li>
+                        <li>Audio-visual aids for learning support</li>
+                        <li>Sign language interpreters available</li>
+                        <li>Assistive technology support center</li>
+                        <li>Special needs counseling services</li>
+                        <li>Accessible transportation services</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer" id="contact">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3><i class="fas fa-map-marker-alt"></i> Contact Info</h3>
+                    <p>KBN College Campus</p>
+                    <p>Education City, India - 500001</p>
+                    <p>Phone: +91-40-12345678</p>
+                    <p>Email: info@kbncollege.ac.in</p>
+                    <p>Website: www.kbncollege.ac.in</p>
+                </div>
+                <div class="footer-section">
+                    <h3><i class="fas fa-clock"></i> Quick Links</h3>
+                    <p><a href="#about">About Us</a></p>
+                    <p><a href="#academics">Academics</a></p>
+                    <p><a href="#placement">Placements</a></p>
+                    <p><a href="#research">Research</a></p>
+                    <p><a href="#suggestions">Ranking Tips</a></p>
+                </div>
+                <div class="footer-section">
+                    <h3><i class="fas fa-share-alt"></i> Follow Us</h3>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+            </div>
+            <p>&copy; 2024 KBN College. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Theme Toggle Functionality
+        const themeToggle = document.getElementById('themeToggle');
+        const html = document.documentElement;
+        const icon = themeToggle.querySelector('i');
+        
+        // Check for saved theme preference
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        html.setAttribute('data-theme', savedTheme);
+        updateThemeIcon(savedTheme);
+        
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateThemeIcon(newTheme);
+        });
+        
+        function updateThemeIcon(theme) {
+            if (theme === 'dark') {
+                icon.className = 'fas fa-sun';
+            } else {
+                icon.className = 'fas fa-moon';
+            }
+        }
+        
+        // Animated counters with improved animation
+        function animateCounters() {
+            const counters = document.querySelectorAll('.stat-number');
+            counters.forEach(counter => {
+                const target = parseInt(counter.getAttribute('data-target'));
+                const increment = target / 100;
+                let current = 0;
+                
+                const updateCounter = () => {
+                    if (current < target) {
+                        current += increment;
+                        counter.textContent = Math.ceil(current);
+                        setTimeout(updateCounter, 15);
+                    } else {
+                        counter.textContent = target;
+                    }
+                };
+                
+                updateCounter();
+            });
+        }
+
+        // Enhanced scroll animations
+        function checkScroll() {
+            const sections = document.querySelectorAll('.section');
+            sections.forEach(section => {
+                const sectionTop = section.getBoundingClientRect().top;
+                const windowHeight = window.innerHeight;
+                
+                if (sectionTop < windowHeight * 0.8) {
+                    section.classList.add('visible');
+                    section.classList.add('loaded');
+                }
+            });
+        }
+
+        // Navbar scroll effect
+        function handleNavbar() {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 100) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        }
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Enhanced hover effects
+        document.querySelectorAll('.info-card, .stat-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-10px) scale(1.02)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+
+        // Progress bar animations
+        function animateProgressBars() {
+            const progressBars = document.querySelectorAll('.progress-fill');
+            progressBars.forEach(bar => {
+                const width = bar.style.width;
+                bar.style.width = '0%';
+                setTimeout(() => {
+                    bar.style.width = width;
+                }, 500);
+            });
+        }
+
+        // Event listeners
+        window.addEventListener('scroll', () => {
+            checkScroll();
+            handleNavbar();
+        });
+
+        // Initialize animations when page loads
+        window.addEventListener('load', () => {
+            animateCounters();
+            checkScroll();
+            setTimeout(animateProgressBars, 1000);
+        });
+
+        // Add loading animation delay
+        setTimeout(() => {
+            document.querySelectorAll('.loading').forEach(element => {
+                element.classList.add('loaded');
+            });
+        }, 300);
+    </script>
+</body>
+</html>
+
